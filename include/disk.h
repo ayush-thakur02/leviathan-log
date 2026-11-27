@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-#ifndef TINYFS_DISK_H
-#define TINYFS_DISK_H
+#ifndef LEVIATHAN_LOG_DISK_H
+#define LEVIATHAN_LOG_DISK_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -18,4 +18,4 @@ int disk_read(const Disk *disk, uint32_t block, void *data);
 int disk_save(const Disk *disk, const char *path);
 int disk_load(Disk *disk, const char *path);
 
-#endif /* TINYFS_DISK_H */
+#endif /* LEVIATHAN_LOG_DISK_H */

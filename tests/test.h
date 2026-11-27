@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-#ifndef TINYFS_TEST_H
-#define TINYFS_TEST_H
+#ifndef LEVIATHAN_LOG_TEST_H
+#define LEVIATHAN_LOG_TEST_H
 
 #include <stdio.h>
 #include <string.h>
@@ -31,4 +31,4 @@
         failures += test_status != 0;                                         \
     } while (0)
 
-#endif /* TINYFS_TEST_H */
+#endif /* LEVIATHAN_LOG_TEST_H */

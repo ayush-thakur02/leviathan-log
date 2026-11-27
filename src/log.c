@@ -39,25 +39,25 @@ static uint32_t align8(uint32_t value)
 }
 
 int tfs_log_append(Disk *disk, uint32_t area_start, uint32_t area_end,
-                   uint32_t *head, uint32_t seq, TfsRecordType type,
+                   uint32_t *head, uint32_t seq, LeviathanRecordType type,
                    uint32_t inode, const char *name, const uint8_t *data,
                    size_t data_len)
 {
     size_t name_len = name != NULL ? strlen(name) : 0;
     uint32_t total;
-    TfsRecordHeader header;
+    LeviathanRecordHeader header;
     uint8_t *destination;
-    if (disk == NULL || head == NULL || name_len >= TFS_MAX_NAME ||
-        data_len > TFS_MAX_FILE || area_start >= area_end || *head < area_start ||
+    if (disk == NULL || head == NULL || name_len >= LEVIATHAN_MAX_NAME ||
+        data_len > LEVIATHAN_MAX_FILE || area_start >= area_end || *head < area_start ||
         *head > area_end) {
         return -1;
     }
-    total = align8((uint32_t)(sizeof(TfsRecordHeader) + name_len + data_len));
+    total = align8((uint32_t)(sizeof(LeviathanRecordHeader) + name_len + data_len));
     if (total > area_end - *head) {
         return -1;
     }
     memset(&header, 0, sizeof(header));
-    header.magic = TFS_RECORD_MAGIC;
+    header.magic = LEVIATHAN_RECORD_MAGIC;
     header.seq = seq;
     header.type = (uint8_t)type;
     header.inode = inode;
@@ -78,7 +78,7 @@ int tfs_log_append(Disk *disk, uint32_t area_start, uint32_t area_end,
 }
 
 int tfs_log_next(const Disk *disk, uint32_t limit, uint32_t *position,
-                 TfsRecordHeader *header, const uint8_t **name,
+                 LeviathanRecordHeader *header, const uint8_t **name,
                  const uint8_t **data)
 {
     const uint8_t *base;
@@ -87,16 +87,16 @@ int tfs_log_next(const Disk *disk, uint32_t limit, uint32_t *position,
         data == NULL || *position > limit) {
         return -1;
     }
-    if (*position + sizeof(TfsRecordHeader) > limit) {
+    if (*position + sizeof(LeviathanRecordHeader) > limit) {
         return 0;
     }
     base = disk->data + *position;
     memcpy(header, base, sizeof(*header));
-    if (header->magic != TFS_RECORD_MAGIC) {
+    if (header->magic != LEVIATHAN_RECORD_MAGIC) {
         return 0;
     }
     total = (uint32_t)(sizeof(*header) + header->name_len + header->data_len);
-    if (header->name_len >= TFS_MAX_NAME || header->data_len > TFS_MAX_FILE ||
+    if (header->name_len >= LEVIATHAN_MAX_NAME || header->data_len > LEVIATHAN_MAX_FILE ||
         *position + total > limit) {
         return -1;
     }

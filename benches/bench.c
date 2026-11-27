@@ -7,7 +7,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "tinyfs.h"
+#include "leviathan-log.h"
 
 static double now_ms(void)
 {
@@ -18,7 +18,7 @@ static double now_ms(void)
 
 int main(void)
 {
-    TinyFs fs;
+    LeviathanFs fs;
     char path[128];
     uint8_t data[200];
     uint8_t buffer[256];
@@ -30,7 +30,7 @@ int main(void)
     if (fs_format(&fs, 512, 512) != 0) {
         return 1;
     }
-    (void)snprintf(path, sizeof(path), "/tmp/tinyfs-bench-%ld.img",
+    (void)snprintf(path, sizeof(path), "/tmp/leviathan-log-bench-%ld.img",
                    (long)getpid());
     for (size_t index = 0; index < sizeof(data); ++index) {
         data[index] = (uint8_t)(index % 251u);

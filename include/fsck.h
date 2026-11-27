@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-#ifndef TINYFS_FSCK_H
-#define TINYFS_FSCK_H
+#ifndef LEVIATHAN_LOG_FSCK_H
+#define LEVIATHAN_LOG_FSCK_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -13,9 +13,9 @@ typedef struct {
     uint32_t damaged_records;
     uint32_t used_inodes;
     int repaired;
-} TfsFsckReport;
+} LeviathanFsckReport;
 
-int fsck_run(Disk *disk, int repair, TfsFsckReport *report, char *err,
+int fsck_run(Disk *disk, int repair, LeviathanFsckReport *report, char *err,
              size_t errcap);
 
-#endif /* TINYFS_FSCK_H */
+#endif /* LEVIATHAN_LOG_FSCK_H */

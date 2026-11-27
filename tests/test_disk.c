@@ -23,7 +23,7 @@ int test_disk(void)
     TEST_ASSERT(memcmp(block, readback, sizeof(block)) == 0);
     TEST_ASSERT(disk_write(&disk, 8, block) != 0);
     TEST_ASSERT(disk_read(&disk, 9, readback) != 0);
-    TEST_ASSERT(snprintf(path, sizeof(path), "/tmp/tinyfs-disk-%ld.img",
+    TEST_ASSERT(snprintf(path, sizeof(path), "/tmp/leviathan-log-disk-%ld.img",
                          (long)getpid()) > 0);
     TEST_ASSERT(disk_save(&disk, path) == 0);
     disk_free(&disk);

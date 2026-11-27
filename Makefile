@@ -12,9 +12,9 @@ MAIN_OBJ := $(BUILD_DIR)/main.o
 TEST_SRC := $(wildcard tests/*.c)
 TEST_OBJ := $(patsubst tests/%.c,$(BUILD_DIR)/tests/%.o,$(TEST_SRC))
 BENCH_OBJ := $(BUILD_DIR)/bench.o
-TARGET := $(BIN_DIR)/tinyfs
-TEST_BIN := $(BIN_DIR)/test_tinyfs
-BENCH_BIN := $(BIN_DIR)/bench_tinyfs
+TARGET := $(BIN_DIR)/leviathan-log
+TEST_BIN := $(BIN_DIR)/test_leviathan-log
+BENCH_BIN := $(BIN_DIR)/bench_leviathan-log
 
 .PHONY: all test bench asan ubsan valgrind clean
 

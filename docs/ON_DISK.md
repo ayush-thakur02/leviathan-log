@@ -1,10 +1,10 @@
-# tinyfs on-disk format
+# leviathan-log on-disk format
 
 All integers are native-endian in this first release. Images use 512-byte blocks.
 
 ## 1. Superblock
 
-Block 0 contains a packed `TfsSuperblock`:
+Block 0 contains a packed `LeviathanSuperblock`:
 
 ```text
 magic         0x54465331 ("TFS1")
@@ -77,9 +77,9 @@ invent missing data.
 ## 6. In-memory limits
 
 ```text
-TFS_MAX_INODES 32
-TFS_MAX_NAME   32 bytes (including NUL)
-TFS_MAX_FILE   4096 bytes
+LEVIATHAN_MAX_INODES 32
+LEVIATHAN_MAX_NAME   32 bytes (including NUL)
+LEVIATHAN_MAX_FILE   4096 bytes
 ```
 
 Names are unique. The inode number is the slot index. File data is replaced by each WRITE

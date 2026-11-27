@@ -5,20 +5,20 @@
 
 #include "disk.h"
 #include "fsck.h"
-#include "tinyfs.h"
+#include "leviathan-log.h"
 
 static void usage(void)
 {
     (void)printf(
-        "tinyfs - log-structured filesystem image tool\n"
+        "leviathan-log - log-structured filesystem image tool\n"
         "\n"
         "USAGE:\n"
-        "  tinyfs format --image PATH --blocks N [--block-size 512]\n"
-        "  tinyfs put --image PATH --name NAME --value TEXT\n"
-        "  tinyfs get --image PATH --name NAME\n"
-        "  tinyfs ls --image PATH\n"
-        "  tinyfs compact --image PATH\n"
-        "  tinyfs fsck --image PATH [--repair]\n"
+        "  leviathan-log format --image PATH --blocks N [--block-size 512]\n"
+        "  leviathan-log put --image PATH --name NAME --value TEXT\n"
+        "  leviathan-log get --image PATH --name NAME\n"
+        "  leviathan-log ls --image PATH\n"
+        "  leviathan-log compact --image PATH\n"
+        "  leviathan-log fsck --image PATH [--repair]\n"
         "\n"
         "The image is a raw block device; the default block size is 512 bytes.\n");
 }
@@ -43,7 +43,7 @@ static int has_flag(int argc, char **argv, const char *name)
     return 0;
 }
 
-static int load(const char *path, TinyFs *fs)
+static int load(const char *path, LeviathanFs *fs)
 {
     if (disk_load(&fs->disk, path) != 0) {
         (void)fprintf(stderr, "error: cannot load %s\n", path);
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
             (void)fprintf(stderr, "error: this image format currently requires 512-byte blocks\n");
             return 1;
         }
-        TinyFs fs;
+        LeviathanFs fs;
         fs_init(&fs);
         if (blocks == 0 || fs_format(&fs, blocks, block_size) != 0 ||
             fs_sync(&fs, image) != 0) {
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     }
     if (strcmp(command, "fsck") == 0) {
         Disk disk;
-        TfsFsckReport report;
+        LeviathanFsckReport report;
         char err[128];
         if (disk_load(&disk, image) != 0) {
             (void)fprintf(stderr, "error: cannot load image\n");
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
         disk_free(&disk);
         return 0;
     }
-    TinyFs fs;
+    LeviathanFs fs;
     fs_init(&fs);
     if (load(image, &fs) != 0) {
         return 1;
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     if (strcmp(command, "get") == 0) {
         const char *name = argument(argc, argv, "--name");
         uint32_t inode;
-        uint8_t buffer[TFS_MAX_FILE];
+        uint8_t buffer[LEVIATHAN_MAX_FILE];
         size_t size = 0;
         if (name == NULL || fs_lookup(&fs, name, &inode) != 0 ||
             fs_read(&fs, inode, buffer, sizeof(buffer), &size) != 0) {
@@ -164,8 +164,8 @@ int main(int argc, char **argv)
         return 0;
     }
     if (strcmp(command, "ls") == 0) {
-        for (uint32_t inode = 0; inode < TFS_MAX_INODES; ++inode) {
-            const TfsInode *entry = fs_inode(&fs, inode);
+        for (uint32_t inode = 0; inode < LEVIATHAN_MAX_INODES; ++inode) {
+            const LeviathanInode *entry = fs_inode(&fs, inode);
             if (entry != NULL) {
                 (void)printf("%u %s %zu\n", inode, entry->name, entry->size);
             }

@@ -6,17 +6,17 @@
 #include <unistd.h>
 
 #include "disk.h"
-#include "tinyfs.h"
+#include "leviathan-log.h"
 #include "test.h"
 
 static int temporary(char *path, size_t capacity)
 {
-    return snprintf(path, capacity, "/tmp/tinyfs-fs-%ld.img", (long)getpid()) > 0;
+    return snprintf(path, capacity, "/tmp/leviathan-log-fs-%ld.img", (long)getpid()) > 0;
 }
 
 int test_fs(void)
 {
-    TinyFs fs;
+    LeviathanFs fs;
     char path[128];
     uint32_t inode;
     uint32_t found;

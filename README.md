@@ -1,4 +1,4 @@
-# tinyfs
+# leviathan-log
 
 A log-structured filesystem image tool in C11: CRC-checked append records, two log areas,
 explicit compaction, crash-tail recovery, and fsck. Files are stored in log records; there
@@ -39,7 +39,7 @@ record = header + name + data + padding + CRC32
   then atomically switches the active area. A crash before the switch leaves the old area
   valid; a crash after it leaves the new area complete.
 - Mount replays the active area up to `head`. A damaged record stops replay; files from
-  earlier records remain available. `tinyfs fsck --repair` truncates `head` to the last
+  earlier records remain available. `leviathan-log fsck --repair` truncates `head` to the last
   valid record.
 
 ## Build
@@ -57,8 +57,8 @@ Analysis targets: `make asan`, `make ubsan`, `make valgrind`.
 ### Docker
 
 ```bash
-docker build -t tinyfs .
-docker run --rm tinyfs --help
+docker build -t leviathan-log .
+docker run --rm leviathan-log --help
 ```
 
 ## Usage
@@ -67,20 +67,20 @@ Images are raw 512-byte-block files.
 
 ```bash
 # Format a 64-block image
-bin/tinyfs format --image disk.img --blocks 64
+bin/leviathan-log format --image disk.img --blocks 64
 
 # Store and read a file
-bin/tinyfs put --image disk.img --name greeting --value "hello tinyfs"
-bin/tinyfs get --image disk.img --name greeting
+bin/leviathan-log put --image disk.img --name greeting --value "hello leviathan-log"
+bin/leviathan-log get --image disk.img --name greeting
 
 # List files
-bin/tinyfs ls --image disk.img
+bin/leviathan-log ls --image disk.img
 
 # Compact the active log into the inactive area
-bin/tinyfs compact --image disk.img
+bin/leviathan-log compact --image disk.img
 
 # Check and repair a damaged tail
-bin/tinyfs fsck --image disk.img --repair
+bin/leviathan-log fsck --image disk.img --repair
 ```
 
 Example output is **illustrative** and was not produced by running the code:
@@ -88,7 +88,7 @@ Example output is **illustrative** and was not produced by running the code:
 ```text
 formatted=disk.img blocks=64 block_size=512
 name=greeting inode=0 bytes=11
-hello tinyfs
+hello leviathan-log
 0 greeting 11
 compacted active_area=1 head=...
 records=2 damaged=0 valid_head=... used_inodes=1 repaired=0

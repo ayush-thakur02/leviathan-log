@@ -7,19 +7,19 @@
 
 #include "disk.h"
 #include "fsck.h"
-#include "tinyfs.h"
+#include "leviathan-log.h"
 #include "test.h"
 
 static int temporary(char *path, size_t capacity)
 {
-    return snprintf(path, capacity, "/tmp/tinyfs-crash-%ld.img", (long)getpid()) > 0;
+    return snprintf(path, capacity, "/tmp/leviathan-log-crash-%ld.img", (long)getpid()) > 0;
 }
 
 int test_crash(void)
 {
-    TinyFs fs;
+    LeviathanFs fs;
     Disk disk;
-    TfsFsckReport report;
+    LeviathanFsckReport report;
     char path[128];
     char err[128];
     uint32_t inode;

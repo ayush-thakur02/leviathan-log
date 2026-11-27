@@ -1,0 +1,9 @@
+build/
+bin/
+*.o
+*.a
+*.so
+*.img
+results/
+.DS_Store
+.env
